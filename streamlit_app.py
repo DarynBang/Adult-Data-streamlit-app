@@ -10,12 +10,22 @@ hide_footer_style = """
     footer {visibility: hidden;}
     </style>
 """
-
 st.set_page_config(layout='wide')
 st.markdown(hide_footer_style, unsafe_allow_html=True)
-data = pd.read_csv(r"C:\Users\steph\Desktop\Excel-CSV files\Practice for Pandas\adult.csv")
+
+#Import data here
+data = pd.read_csv(r"https://raw.githubusercontent.com/DarynBang/Adult-Data-streamlit-app/master/adult.csv")
 sns.set_style("dark")
 df = data.copy()
+
+def plotly_layout(figure):
+    figure.update_layout(
+        xaxis_title="",
+        yaxis_title="",
+        showlegend=False
+    )
+    st.plotly_chart(figure)
+
 
 st.title("Adult data Project")
  
@@ -109,37 +119,21 @@ elif options == 'Visualizations':
 
     barh_c1, barh_c2 = st.columns((4, 4))
     with barh_c1:
-        labels1= st.selectbox("Select category to monitor", options=categorical_features)
+        labels1 = st.selectbox("Select category to monitor", options=categorical_features)
         fig1 = px.bar(data_frame=df[labels1].value_counts(ascending=True).tail(8), orientation='h',
                       title=f"{labels1.capitalize()} data monitor", width=600)
-        fig1.update_layout(
-            xaxis_title="",
-            yaxis_title="",
-            showlegend=False
-        )
-        # fig1.update_traces(textposition='outside')
-        st.plotly_chart(fig1)
+        plotly_layout(fig1)
 
     with barh_c2:
         labels2 = st.selectbox("Select another category to monitor", options=categorical_features)
         fig2 = px.bar(data_frame=df[labels2].value_counts(ascending=True).tail(8), orientation='h', width=600,
                       title=f"{labels1.capitalize()} data monitor")
-        fig2.update_layout(
-            xaxis_title="",
-            yaxis_title="",
-            showlegend=False
-        )
-        # fig1.update_traces(textposition='outside')
-        st.plotly_chart(fig2)
+        plotly_layout(fig2)
 
     category_data = df[categorical_features].nunique().sort_values()
     cat_bar = px.bar(data_frame=category_data, text_auto=True, orientation='h', title='Categories')
     cat_bar.update_traces(textposition='outside', marker_color='gray')
-    cat_bar.update_layout(
-        xaxis_title="",
-        yaxis_title="",
-        showlegend=False
-    )
+    plotly_layout(cat_bar)
     st.plotly_chart(cat_bar)
 
 
