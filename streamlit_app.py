@@ -134,7 +134,6 @@ elif options == 'Visualizations':
     cat_bar = px.bar(data_frame=category_data, text_auto=True, orientation='h', title='Categories')
     cat_bar.update_traces(textposition='outside', marker_color='gray')
     plotly_layout(cat_bar)
-    st.plotly_chart(cat_bar)
 
 
     st.markdown("-----")
